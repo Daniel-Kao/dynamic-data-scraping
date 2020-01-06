@@ -27,15 +27,12 @@ class Page(QWebEnginePage):
 def main():
     page = Page('http://quote.eastmoney.com/center/gridlist.html#hs_a_board')
     soup = BeautifulSoup(page.html, 'lxml')
-    pattern = r'http://quote\.eastmoney.com/kcb/688081.html'
-    codeList = soup.findAll('a', href=pattern)
-    print(codeList)
-
+    pattern = re.compile(r'//quote.eastmoney.com/.*?/.*?/\d\.(.*)')
+    tagList = soup.findAll('a', href=pattern)
+    for tag in tagList:
+        if re.search(r'^\d+$',tag.getText()) != None:
+            print(tag.getText())
 
 if __name__ == '__main__': main()
 
 
-
-
-
-# getStockCodes(url)
